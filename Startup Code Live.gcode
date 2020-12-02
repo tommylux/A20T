@@ -7,20 +7,31 @@
 	M82 ; E Absolute
 	G92 E0 ; Set Position
 	G1 Z15 F3000 ; Lift up
-	G0 X1 Y10 F3000 ; Get Nozzle out the way from centre
+
+	G0 X0 F5000; Go to bucket
+	M211 S0 ; Disable SoftStops
+	G0 X-2 F500; Go to bucket Closer
+	M211 S1 ; Enable SoftStops
+	
 	M107 ; Fan Off
 	M412 S1 ; Enable Runout Sensor
 
 	M104 S{material_print_temperature_layer_0} ; start preheating hotend
 	M190 S{material_bed_temperature_layer_0} ; wait for Cura Bed setting
 	M109 S{material_print_temperature_layer_0} ; wait for Cura Hotend
+
 ;/Start Script
 
 ;End Script
+	G92 E0 ; Set current extruder position to 0
+	G1 E-7 ; Retract 1mm
+
 	G91 ; Set the interpreter to relative positions
-	G1 E-1 ; Retract 1mm
 	G0 Z10 ; Lift up by 10mm (relative)
-	G0 X0 Y100 ; Move Bed forward by 100
+	
+	G90 ; Absolute positioning
+	G0 X0 Y200 ; Home
+
 	M104 S0 ; Swith off Hotend
 	M140 S0 ; Switch off Bed
 	G90 ; Absolute positioning
@@ -30,34 +41,30 @@
 
 
 ;Change Tool
-	;Only for Extruder 4+ ()
-	;M165 A0.5 B0.5 C0 ;  M163 and M163 alternative throws errors as T3 not available.
-	
+	;M165 A1 B0 C0 ;  T0
+	;M165 A0 B1 C0 ;  T1
+	;M165 A0 B0 C1 ;  T2
+	;M165 A0.5 B0.5 C0 ;  T3
+
 	M117 Changing Tool
+	G1 E55 F60 ; Extrude into Bucket
+	G92 E0 ; Set current extruder position to 0
+	G1 F2700 E-7 ; Retract to try and slow oooze.
+	G0 F5000 ; Set travel speed
+	
+	;G4 S1 ; Pause 1 second
+	G0 X10 F6000 ; Wipe
+	G0 X-2 F6000 ; Wipe
+	M211 S1 ; Enable SoftStops
+	
+;/Change Tool
+
+;Change End
+	G1 F2700 E-7 ; Retract (45ms)
 	G0 X0 F5000; Go to bucket
 	M211 S0 ; Disable SoftStops
 	G0 X-2 F500; Go to bucket Closer
 	G1 E0 F2700 ; Recover
-	G1 E30 F150 ; Extrude into Bucket
-	G92 E0 ; Set current extruder position to 0
-	G1 F2700 E-7 ; Retract to try and slow oooze.
-
-	G4 S5 ; Pause 1 second
-		G0 X10 F500 ; Wipe
-		G0 X-2 F500 ; Wipe
-		G0 X10 F6000 ; Wipe
-		G0 X-2 F6000 ; Wipe
-		G0 X10 F6000 ; Wipe
-		G0 X-2 F6000 ; Wipe
-		G0 X10 F6000 ; Wipe
-		G0 X-2 F6000 ; Wipe
-	G1 E0 F2700 ; Recover as Cura may apply it's own retract and G92 E0 and there is no filament ready.
-	G92 E0 ; Set current extruder position to 0
-	M211 S1 ; Enable SoftStops
-;/Change Tool
-
-;Change End
-	G1 F2700 E-5 ; Retract (45ms)
 ;/Change End
 
  
@@ -72,12 +79,13 @@
 
 
 
-;Probe offset: -2.67
-Replace codes:
+;Probe offsets: 
 
+Stock 0.4 -2.550
+0.2 -1.44
+
+;Replace codes:
+M104 T[0-7]+ S
+T[3-7]
 
 ;;Issues
-
-2. First layer resuming height is low.. Probably becasue the tool change says existing height? Check where Tool 1 is first selected.
-3. Under extruding by the looks of things.
-4. Temperature dropping way too low.. 130
