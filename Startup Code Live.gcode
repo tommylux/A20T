@@ -4,7 +4,7 @@
 	;G29 ; Bed leveling
 
 	G90 ; Absolute Positioning
-	M82 ; E Absolute
+	M82 ; E Absolute independant of G91 (Relative)
 	G92 E0 ; Set Position
 	G1 Z15 F3000 ; Lift up
 
@@ -41,12 +41,12 @@
 
 
 ;Change Tool
-	;M165 A1 B0 C0 ;  T0
-	;M165 A0 B1 C0 ;  T1
-	;M165 A0 B0 C1 ;  T2
-	;M165 A0.5 B0.5 C0 ;  T3
-
-	M117 Changing Tool
+	;Virtual Tools
+		;M165 A0.5 B0.5 C0 ;  Tz
+		M163 S0 P0.6
+		M163 S1 P0.4
+		M164 S3
+	;/Virtual Tools
 	G1 E55 F60 ; Extrude into Bucket
 	G92 E0 ; Set current extruder position to 0
 	G1 F2700 E-7 ; Retract to try and slow oooze.
@@ -56,8 +56,8 @@
 	G0 X10 F6000 ; Wipe
 	G0 X-2 F6000 ; Wipe
 	M211 S1 ; Enable SoftStops
-	
 ;/Change Tool
+
 
 ;Change End
 	G1 F2700 E-7 ; Retract (45ms)
@@ -66,6 +66,9 @@
 	G0 X-2 F500; Go to bucket Closer
 	G1 E0 F2700 ; Recover
 ;/Change End
+
+;Search and replace codes:
+M104 T[0-7]+ S ; Disable temp changes directed to tools
 
  
 ; Prep line - Not used.
@@ -84,8 +87,5 @@
 Stock 0.4 -2.550
 0.2 -1.44
 
-;Replace codes:
-M104 T[0-7]+ S
-T[3-7]
 
 ;;Issues
