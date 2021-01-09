@@ -1,0 +1,3 @@
+My board info:
+
+GT2560_V4.0
