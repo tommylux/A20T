@@ -7,21 +7,45 @@
 	M82 ; E Absolute independant of G91 (Relative)
 	G92 E0 ; Set Position
 	G1 Z15 F1700 ; Lift up (1800 is max)
-	G0 X0 F9000; Go to bucket (~15000 is max)
+	
+	G0 X0 F9000; Go to bucket
 	M211 S0 ; Disable SoftStops
-	G0 X-2 F500; Go to bucket Closer
+	G0 X-4 F500; Go to bucket Closer
 	M211 S1 ; Enable SoftStops
 	
 	M107 ; Fan Off
 	M412 S1 ; Enable Runout Sensor
 
 	;Set Mix for Virtual Tools
+		M163 S0 P0.8
+		M163 S1 P0.2
+		M163 S2 P0.0
+		M164 S3 ;T3
+
 		M163 S0 P0.6
 		M163 S1 P0.4
-		M164 S3 ;T3
+		M163 S2 P0.0
+		M164 S4 ;T4
+
+		M163 S0 P0.8
+		M163 S1 P0.0
+		M163 S2 P0.2
+		M164 S5 ;T5
+
+		M163 S0 P0.6
+		M163 S1 P0.0
+		M163 S2 P0.4
+		M164 S6 ;T6
+
+		M163 S0 P0.1
+		M163 S1 P0.1
+		M163 S2 P0.8
+		M164 S7 ;T7
 	;/Virtual Tools
 
-	;M165 A0 B0.5 C0.5 ; Set Mix for current tool
+	;/Colour mixing:
+		;M165 A0 B0.5 C0.5 ; Set Mix for current tool
+	
 	M104 S{material_print_temperature_layer_0} ; start preheating hotend
 	M190 S{material_bed_temperature_layer_0} ; wait for Cura Bed setting
 	M109 S{material_print_temperature_layer_0} ; wait for Cura Hotend
@@ -48,42 +72,47 @@
 
 
 ;Change Tool
-	G1 E50 F50 ; Extrude into Bucket
+	G91 ; Relative position
+	G0 Z1 F9000 ; Lift Nozzle
+
+	G90 ; Absolute
+	G1 F3000 E-4 ; Retract (50ms = 3000 45ms = 2700)
+	G0 X0 F9000; Go to bucket
+ 
+	M211 S0 ; Disable SoftStops
+	G0 X-4 F500; Go to bucket Closer
+	G1 E0 F3000 ; Recover
+	
+	G91 ; Relative
+	G1 E25 F100 ; Extrude into Bucket
+	G1 E5 F50 ; Slow Purge to reduce pressure
+
+	G90 ; Absolute
 	G92 E0 ; Set current extruder position to 0
-	G4 S1 ; Pause 1 second
+	G1 E-4 F3000 ; Retract a bit
+	
+	; Wait for ooze
+	G4 S2 ; Wait 2 seconds
+
 	G0 X10 F1000 ; Wipe
-	G0 X-2 F1000 ; Wipe
+	G0 X-4 F1000 ; Wipe
 	G0 X10 F6000 ; Wipe
-	G0 X-2 F6000 ; Wipe
+	G0 X-4 F6000 ; Wipe
 	M211 S1 ; Enable SoftStops
 ;/Change Tool
 
-
-;Change End
-	G1 F2700 E-7 ; Retract (45ms)
-	G0 X0 F9000; Go to bucket
-	M211 S0 ; Disable SoftStops
-	G0 X-2 F500; Go to bucket Closer
-	G1 E0 F2700 ; Recover
-;/Change End
-
 ;Search and replace codes:
 Find: M104 T[0-7]+ S ; Disable temp changes directed to tools
-	Replace ;Removed any temp changes directed at Ts: M104 T[0-7]+ S
+	Replace: ;Removed any temp changes directed at Ts: M104 T[0-7]+ S
 Find: G1 F600
-	Replace G1 F7000
+	Replace: G1 F7000
+Find: M105\nM109
+	Replace: ;Remove Temp tool changes05 and 109
 
- 
-; Prep line - Not used.
-;	G0 X10 Y20 F6000 ; Get into position of Prep Line
-;	G1 Z0.8 ; Drop Nozzle to starting point
-;	G1 F300 X200 E40 ; Prep Line
-;	G1 F1200 Z4 ; Lift Nozzle
-;	G92 E0 ; Set Position
-;	G28 X; Autohome X
-; End of prep line
+Find: ;/Change Tool\nG92 E0
+	Replace: ;/Change Tool\n;Removed Retract G92 E0
 
-
+  
 
 ;Probe offsets: 
 
