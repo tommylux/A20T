@@ -716,7 +716,7 @@
  *
  * :[2,3,4,5,6,7]
  */
-//#define ENDSTOP_NOISE_THRESHOLD 2
+#define ENDSTOP_NOISE_THRESHOLD 2
 
 // Check for stuck or disconnected endstops during homing moves.
 //#define DETECT_BROKEN_ENDSTOP
@@ -741,7 +741,7 @@
  */
 
 //Tom this is defined in Verts but not in Sample config.
-//#define DISTINCT_E_FACTORS
+#define DISTINCT_E_FACTORS
 
 /**
  * Default Axis Steps Per Unit (steps/mm)
@@ -755,8 +755,8 @@
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-//Tom Vers shows:v#define DEFAULT_MAX_FEEDRATE          { 200, 200, 30, 120 }
-#define DEFAULT_MAX_FEEDRATE          { 500, 500, 5, 25 }
+//Tom Vers shows: define DEFAULT_MAX_FEEDRATE          { 200, 200, 30, 120 }
+#define DEFAULT_MAX_FEEDRATE          { 500, 500, 30, 120 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -770,7 +770,7 @@
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
 //Tom This is different to verts.. Took the lower examle for safety.
-#define DEFAULT_MAX_ACCELERATION      { 500, 500, 100, 5000 }
+#define DEFAULT_MAX_ACCELERATION      { 1000, 1000, 150, 8000 }
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -1006,7 +1006,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -40, 0, -2.2 }
+#define NOZZLE_TO_PROBE_OFFSET { -40, 0, -2.55 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1023,9 +1023,10 @@
 
 // X and Y axis travel speed (mm/min) between probes
 //Tom set as absolute values in Verts.. 10*60
-#define XY_PROBE_SPEED (HOMING_FEEDRATE_Z /2) //HOMING_FEEDRATE_XY
+#define XY_PROBE_SPEED (80*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
+//Example config has this at 80x60
 #define Z_PROBE_SPEED_FAST (4*60)
 
 // Feedrate (mm/min) for the "accurate" probe of each point
@@ -1502,7 +1503,7 @@
 //#define Z_PROBE_END_SCRIPT "G1 Z10 F12000\nG1 X15 Y330\nG1 Z0.5\nG1 Z10"
 
 //Tom Copied from Verts
-#define Z_PROBE_END_SCRIPT "G1 X0 Y0"
+//#define Z_PROBE_END_SCRIPT "G1 X0 Y0"
 
 // @section homing
 
@@ -1534,7 +1535,7 @@
 // Homing speeds (mm/min)
 // Tom Reduced to match Verts.. assumed causing homing errors before.
 // #define HOMING_FEEDRATE_MM_M { (80*60), (80*60), (20*60) } //Original
-#define HOMING_FEEDRATE_MM_M { (10*60), (10*60), (4*60) }}
+#define HOMING_FEEDRATE_MM_M { (30*60), (30*60), (10*60) }
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
