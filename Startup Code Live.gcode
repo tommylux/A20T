@@ -10,7 +10,7 @@
 	
 	G0 X0 F9000; Go to bucket
 	M211 S0 ; Disable SoftStops
-	G0 X-4 F500; Go to bucket Closer
+	G0 X-5 F500; Go to bucket Closer
 	M211 S1 ; Enable SoftStops
 	
 	M107 ; Fan Off
@@ -60,6 +60,9 @@
 	G0 F1700 Z3 ; Lift up by 10mm (relative)
 	G90 ; Absolute positioning
 	G0 X0 F9000
+	M211 S0 ; Disable SoftStops
+	G0 X-5 F500; Go to bucket Closer
+	M211 S1 ; Enable SoftStops
 	G0 Y200 F2700 ; Move bed forward
 
 	m107 ; Fan Off
@@ -72,34 +75,38 @@
 
 
 ;Change Tool
-	G91 ; Relative position
-	G0 Z1 F9000 ; Lift Nozzle
-
-	G90 ; Absolute
-	G1 F3000 E-4 ; Retract (50ms = 3000 45ms = 2700)
-	G0 X0 F9000; Go to bucket
- 
-	M211 S0 ; Disable SoftStops
-	G0 X-4 F500; Go to bucket Closer
-	G1 E0 F3000 ; Recover
-	
+	M109 R{material_print_temperature}
 	G91 ; Relative
 	G1 E25 F100 ; Extrude into Bucket
 	G1 E5 F50 ; Slow Purge to reduce pressure
 
 	G90 ; Absolute
 	G92 E0 ; Set current extruder position to 0
-	G1 E-4 F3000 ; Retract a bit
+	G1 E-6 F3000 ; Retract a bit
 	
 	; Wait for ooze
-	G4 S2 ; Wait 2 seconds
+	G4 S3 ; Wait 2 seconds
 
-	G0 X10 F1000 ; Wipe
-	G0 X-4 F1000 ; Wipe
-	G0 X10 F6000 ; Wipe
-	G0 X-4 F6000 ; Wipe
+	G0 X5 F500 ; Wipe
+	G0 X-5 F4000 ; Wipe
+	G0 X5 F500 ; Wipe
+	G0 X-5 F4000 ; Wipe
 	M211 S1 ; Enable SoftStops
 ;/Change Tool
+
+;Change End
+	G90 ; Absolute
+	G1 F3000 E-6 ; Retract (50ms = 3000 45ms = 2700)
+	G91 ; Relative position
+	G0 Z0.2 F9000 ; Lift Nozzle
+
+	G90 ; Absolute
+	G0 X0 F9000; Go to bucket
+ 
+	M211 S0 ; Disable SoftStops
+	G0 X-5 F500; Go to bucket Closer
+	G1 E0 F3000 ; Recover
+;/Change End
 
 ;Search and replace codes:
 Find: M104 T[0-7]+ S ; Disable temp changes directed to tools
@@ -107,9 +114,9 @@ Find: M104 T[0-7]+ S ; Disable temp changes directed to tools
 Find: G1 F600
 	Replace: G1 F7000
 Find: M105\nM109
-	Replace: ;Remove Temp tool changes05 and 109
+	Replace: ;Remove Temp tool changes M105 followed by M109 S200
 
-Find: ;/Change Tool\nG92 E0
+Find: ;/Change End\nG92 E0
 	Replace: ;/Change Tool\n;Removed Retract G92 E0
 
   
