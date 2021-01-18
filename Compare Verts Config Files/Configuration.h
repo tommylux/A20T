@@ -1,4 +1,17 @@
 /**
+ * Verts latest
+ * Tom From what I can tell, the following are defined:
+ * GTA20T
+ * GTA20
+ * MIXT
+ * TOUCHPROBE
+ * DOUBLESPEED
+ * USE_PROBE_FOR_Z_HOMING
+ * PLR
+ * RUNOUT
+ * MULTIEXTRUDER
+ * AT2560
+ * 
  * Marlin 3D Printer Firmware
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
@@ -56,15 +69,15 @@
 //===========================================================================
 //============================= DELTA Printer ===============================
 //===========================================================================
-// For a Delta printer start with one of the configuration files in the
-// config/examples/delta directory and customize for your machine.
+// For a Delta printer, start with one of the configuration files in the config/examples/delta directory
+// from https://github.com/MarlinFirmware/Configurations/branches/all and customize for your machine.
 //
 
 //===========================================================================
 //============================= SCARA Printer ===============================
 //===========================================================================
-// For a SCARA printer start with the configuration files in
-// config/examples/SCARA and customize for your machine.
+// For a SCARA printer, start with one of the configuration files in the config/examples/SCARA directory
+// from https://github.com/MarlinFirmware/Configurations/branches/all and customize for your machine.
 //
 
 // @section info
@@ -72,7 +85,7 @@
 // Author info of this build printed to the host during boot and M115
 #define STRING_CONFIG_H_AUTHOR "(Vertabreaker)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
-#define SHORT_BUILD_VERSION "Bugfix Build 500"
+#define SHORT_BUILD_VERSION "Bugfix Build 501"
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -141,14 +154,14 @@
 //----------------------------------------------------------------------------------------------------
 //GTM32 Boards - vscode: default_envs = STM32F103VE_GTM32 in platformio.ini
 
-//#define GTA30       // A30  & Variants - no touchscreen support
-//#define GTA30M      // A30M & Variants - no touchscreen support
-//#define GTA30C      // A30C & Variants - no touchscreen support
-//#define GTA30T      // A30T & Variants - no touchscreen support
-//#define GTA30CT     // A30CT & Variants - no touchscreen support
-//#define GTE180      // E180 & Variants - no touchscreen support
-//#define GTM201      // M201 & Variants - no touchscreen support
-//#define GTD200      // D200 & Variants - no touchscreen support
+//#define GTA30       // A30  & Variants - no touchscreen support, for development only
+//#define GTA30M      // A30M & Variants - no touchscreen support, for development only
+//#define GTA30C      // A30C & Variants - no touchscreen support, for development only
+//#define GTA30T      // A30T & Variants - no touchscreen support, for development only
+//#define GTA30CT     // A30CT & Variants - no touchscreen support, for development only
+//#define GTE180      // E180 & Variants - no touchscreen support, for development only
+//#define GTM201      // M201 & Variants - no touchscreen support, for development only
+//#define GTD200      // D200 & Variants - no touchscreen support, for development only
 
   #if ENABLED (GTA30M)
     #define GTA30
@@ -216,7 +229,7 @@
 
 //#define HEATERACCURACY   // Disable heaters while probing - May effect accuracy +-
 //#define HALFSPEED        // Reduce probing speed by 50% = 120 - May effect accuracy +-
-//#define DOUBLESPEED      // Raise probing speed by 100% = 480 - May effect accuracy +-
+#define DOUBLESPEED      // Raise probing speed by 100% = 480 - May effect accuracy +-
 
 //(Multi Extruder Mods) These can be added to any model assuming you added the hardware to make use of it.
 
@@ -225,7 +238,7 @@
 //#define CYCLOPS  // Enable Cyclops    2 in 1 - 2 Physical Extruder 
 
 //Either Mix T or Cyclops T can be used on T variants 
-//#define MIXT     // Enable Mixing T   3 in 1 - 1 Virtual Extruder
+#define MIXT     // Enable Mixing T   3 in 1 - 1 Virtual Extruder
 //#define CYCLOPST // Enable Cyclops T  3 in 1 - 3 Physical Extruder
 
 //Intended for use with D variants
@@ -303,9 +316,9 @@
 
 //Optional features
 
-//#define PLR              // Enabled power loss resume - Only functions from SDcard
+#define PLR              // Enabled power loss resume - Only functions from SDcard
 #define RUNOUT           // Enable filament runout sensor - Only If you have them and want to use them
-#define BEDCLIPS         // Enable to avoid bed clips (manual or probe) - Only If you have them and want to use them
+//#define BEDCLIPS         // Enable to avoid bed clips (manual or probe) - Only If you have them and want to use them
 //#define CASELIGHT        // Enable case light menu if board has led header.
 //#define LINADV           // Enable linear advance.
 //#define FANSCALING       // Enabled PID FAN SCALING
@@ -364,10 +377,11 @@
 #endif
 
 //Bed clip logic - use mesh inset or min probe edge to avoid clips not both
+//Tom Reference
 #if ENABLED (BEDCLIPS)
-  #define MESH_INSET 30   // Move mesh in #mm from edge
+  #define MESH_INSET 70   // Move mesh in #mm from edge
   //Set per side
-  //#define MESH_MIN_X MESH_INSET
+  //#define MESH_MIN_X (MESH_INSET)
   //#define MESH_MIN_Y MESH_INSET
   //#define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
   //#define MESH_MAX_Y Y_BED_SIZE - (MESH_INSET)
@@ -498,7 +512,7 @@
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "3D Printer" 
+#define CUSTOM_MACHINE_NAME "GeeeTech A20T" 
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like http://www.uuidgenerator.net/version4
@@ -1641,11 +1655,6 @@
 #endif
 
 /**
- * Pressure sensor with a BLTouch-like interface
- */
-//#define CREALITY_TOUCH
-
-/**
  * Touch-MI Probe by hotends.fr
  *
  * This probe is deployed and activated by moving the X-axis to a magnet at the edge of the bed.
@@ -1698,10 +1707,20 @@
 /**
  * Nozzle-to-Probe offsets { X, Y, Z }
  *
- * - Use a caliper or ruler to measure the distance from the tip of
+ * X and Y offset
+ *   Use a caliper or ruler to measure the distance from the tip of
  *   the Nozzle to the center-point of the Probe in the X and Y axes.
+ *
+ * Z offset
  * - For the Z offset use your best known value and adjust at runtime.
- * - Probe Offsets can be tuned at runtime with 'M851', LCD menus, babystepping, etc.
+ * - Common probes trigger below the nozzle and have negative values for Z offset.
+ * - Probes triggering above the nozzle height are uncommon but do exist. When using
+ *   probes such as this, carefully set Z_CLEARANCE_DEPLOY_PROBE and Z_CLEARANCE_BETWEEN_PROBES
+ *   to avoid collisions during probing.
+ *
+ * Tune and Adjust
+ * -  Probe Offsets can be tuned at runtime with 'M851', LCD menus, babystepping, etc.
+ * -  PROBE_OFFSET_WIZARD (configuration_adv.h) can be used for setting the Z offset.
  *
  * Assuming the typical work area orientation:
  *  - Probe to RIGHT of the Nozzle has a Positive X offset
@@ -1728,7 +1747,7 @@
 #if DISABLED (MULTIEXTRUDER) && ANY(TOUCHPROBE, FMP) && ANY (GTA10, GTA20)
   #define NOZZLE_TO_PROBE_OFFSET { -38, 5, 0 } // Nozzle To Probe offset XYZ A10/A20 - this is what it is on my test machines yours could differ 
 #elif ENABLED (MULTIEXTRUDER) && ANY(TOUCHPROBE, FMP) && ANY (GTA10, GTA20)
-  #define NOZZLE_TO_PROBE_OFFSET { -40, 0, 0 }  // Nozzle To Probe offset XYZ A10M+T/A20M+T - this is what it is on my test machines yours could differ
+  #define NOZZLE_TO_PROBE_OFFSET { -40, 0, -2.3 }  // Nozzle To Probe offset XYZ A10M+T/A20M+T - this is what it is on my test machines yours could differ
 #elif ANY (BEAR, BEAR_TURBO) && ENABLED (TOUCHPROBE)
   #define NOZZLE_TO_PROBE_OFFSET { 26, 10, 0 } 
 #elif ANY (BEAR, BEAR_TURBO)
@@ -1737,25 +1756,60 @@
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, 0 }
 #endif
 
+//Tom Reference 1: 
+#define AUTO_BED_LEVELING_BILINEAR  
+
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
 #if ENABLED (AUTO_BED_LEVELING_BILINEAR)
-  #define PROBING_MARGIN 20 //suggested only using mesh inset or probing margin to adjust probe area
+  #define PROBING_MARGIN 30 //suggested only using mesh inset or probing margin to adjust probe area
+  #define PROBING_MARGIN_LEFT (38.5 + PROBING_MARGIN)
+  #define PROBING_MARGIN_RIGHT (PROBING_MARGIN)
+  #define PROBING_MARGIN_FRONT PROBING_MARGIN
+  #define PROBING_MARGIN_BACK (PROBING_MARGIN)
+
 #endif
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED HOMING_FEEDRATE_XY
+#define XY_PROBE_SPEED 10*60
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST Z_PROBE_SPEED_SLOW
 
 // Feedrate (mm/m) for the "accurate" probe of each point
 #if ENABLED (HALFSPEED)
-  #define Z_PROBE_SPEED_SLOW (HOMING_FEEDRATE_Z/2)  // 120 Probe speed reduce if accuracy is poor
+  #define Z_PROBE_SPEED_SLOW (2*60)  // 120 Probe speed reduce if accuracy is poor
 #elif ENABLED (DOUBLESPEED)
-  #define Z_PROBE_SPEED_SLOW (HOMING_FEEDRATE_Z*2)  // 480 Probe speed raise if accuracy is poor
+  #define Z_PROBE_SPEED_SLOW (8*60)  // 480 Probe speed raise if accuracy is poor
 #else
-  #define Z_PROBE_SPEED_SLOW HOMING_FEEDRATE_Z      // 240 Probe speed reduce/raise if accuracy is poor
+  #define Z_PROBE_SPEED_SLOW (4*60)  // 240 Probe speed reduce/raise if accuracy is poor
+#endif
+
+/**
+ * Probe Activation Switch
+ * A switch indicating proper deployment, or an optical
+ * switch triggered when the carriage is near the bed.
+ */
+//#define PROBE_ACTIVATION_SWITCH
+#if ENABLED(PROBE_ACTIVATION_SWITCH)
+  #define PROBE_ACTIVATION_SWITCH_STATE LOW // State indicating probe is active
+  //#define PROBE_ACTIVATION_SWITCH_PIN PC6 // Override default pin
+#endif
+
+/**
+ * Tare Probe (determine zero-point) prior to each probe.
+ * Useful for a strain gauge or piezo sensor that needs to factor out
+ * elements such as cables pulling on the carriage.
+ */
+//#define PROBE_TARE
+#if ENABLED(PROBE_TARE)
+  #define PROBE_TARE_TIME  200    // (ms) Time to hold tare pin
+  #define PROBE_TARE_DELAY 200    // (ms) Delay after tare before
+  #define PROBE_TARE_STATE HIGH   // State to write pin for tare
+  //#define PROBE_TARE_PIN PA5    // Override default pin
+  #if ENABLED(PROBE_ACTIVATION_SWITCH)
+    //#define PROBE_TARE_ONLY_WHILE_INACTIVE  // Fail to tare/probe if PROBE_ACTIVATION_SWITCH is active
+  #endif
 #endif
 
 /**
@@ -1821,6 +1875,13 @@
 //#define PROBING_FANS_OFF          // Turn fans off when probing
 //#define PROBING_STEPPERS_OFF      // Turn steppers off (unless needed to hold position) when probing
 //#define DELAY_BEFORE_PROBING 200  // (ms) To prevent vibrations from triggering piezo sensors
+#endif
+
+// Require minimum nozzle and/or bed temperature for probing.
+//#define PREHEAT_BEFORE_PROBING
+#if ENABLED(PREHEAT_BEFORE_PROBING)
+  #define PROBING_NOZZLE_TEMP 120   // (°C) Only applies to E0 at this time
+  #define PROBING_BED_TEMP     50
 #endif
 
 // For Inverting Stepper Enable Pins (Active Low) use 0, Non Inverting (Active High) use 1
@@ -1918,8 +1979,8 @@
 
 // @section homing
 
-//#define NO_MOTION_BEFORE_HOMING // Inhibit movement until all axes have been homed
-
+//#define NO_MOTION_BEFORE_HOMING // Inhibit movement until all axes have been homed. Also enable HOME_AFTER_DEACTIVATE for extra safety.
+//#define HOME_AFTER_DEACTIVATE   // Require rehoming after steppers are deactivated. Also enable NO_MOTION_BEFORE_HOMING for extra safety.
 //#define UNKNOWN_Z_NO_RAISE      // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
 
 #define Z_HOMING_HEIGHT  5      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
@@ -2163,11 +2224,13 @@
  *   of other systems. UBL also includes integrated Mesh Generation, Mesh
  *   Validation and Mesh Editing systems.
  */
-#if DISABLED (AT1280)
-  #define AUTO_BED_LEVELING_UBL
-#else  
-  #define AUTO_BED_LEVELING_BILINEAR  
-#endif
+
+//Tom Reference Point 2
+//#if DISABLED (AT1280)
+//  #define AUTO_BED_LEVELING_UBL
+//#else  
+//  #define AUTO_BED_LEVELING_BILINEAR  
+//#endif
 
 #if ENABLED (AUTO_BED_LEVELING_UBL)
   #define GRIDSIZE 5   // Mesh grid size adjust as needed
@@ -2176,10 +2239,21 @@
 #endif
 
 /**
- * Normally G28 leaves leveling disabled on completion. Enable
- * this option to have G28 restore the prior leveling state.
+ * Normally G28 leaves leveling disabled on completion. Enable one of
+ * these options to restore the prior leveling state or to always enable
+ * leveling immediately after G28.
  */
 #define RESTORE_LEVELING_AFTER_G28
+//#define ENABLE_LEVELING_AFTER_G28
+
+/**
+ * Auto-leveling needs preheating
+ */
+//#define PREHEAT_BEFORE_LEVELING
+#if ENABLED(PREHEAT_BEFORE_LEVELING)
+  #define LEVELING_NOZZLE_TEMP 120   // (°C) Only applies to E0 at this time
+  #define LEVELING_BED_TEMP     50
+#endif
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
@@ -2193,6 +2267,9 @@
   // at which point movement will be level to the machine's XY plane.
   // The height can be set with M420 Z<height>
   #define ENABLE_LEVELING_FADE_HEIGHT
+  #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
+    #define DEFAULT_LEVELING_FADE_HEIGHT 10.0 // (mm) Default fade height.
+  #endif
 
   // For Cartesian machines, instead of dividing moves on mesh boundaries,
   // split up moves into short segments like a Delta. This follows the
@@ -2293,6 +2370,16 @@
   #define LEVEL_CORNERS_HEIGHT      0.0   // (mm) Z height of nozzle at leveling points
   #define LEVEL_CORNERS_Z_HOP       5.0   // (mm) Z height of nozzle between leveling points
   #define LEVEL_CENTER_TOO              // Move to the center after the last corner
+  
+  #if ANY (FMP, PINDA, TOUCHPROBE)
+    #define LEVEL_CORNERS_USE_PROBE
+  #endif
+
+  #if ENABLED(LEVEL_CORNERS_USE_PROBE)
+    #define LEVEL_CORNERS_PROBE_TOLERANCE 0.05
+    #define LEVEL_CORNERS_VERIFY_RAISED   // After adjustment triggers the probe, re-probe to verify
+    //#define LEVEL_CORNERS_AUDIO_FEEDBACK
+  #endif
 #endif
 #endif
 
@@ -2331,9 +2418,7 @@
 #endif
 
 // Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (HOMING_FEEDRATE_Z * 10)   //40*60
-#define HOMING_FEEDRATE_Z  (BASE_HOMING_FEEDRATE * 4) //4*60
-#define BASE_HOMING_FEEDRATE 60
+#define HOMING_FEEDRATE_MM_M { (10*60), (10*60), (4*60) }
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -2451,8 +2536,8 @@
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
   #define NOZZLE_PARK_POINT { X_MIN_POS, Y_BED_SIZE , 20 }
-  #define NOZZLE_PARK_XY_FEEDRATE (HOMING_FEEDRATE_XY / 60)    // (mm/s) X and Y axes feedrate (also used for delta Z axis)
-  #define NOZZLE_PARK_Z_FEEDRATE  (HOMING_FEEDRATE_Z / 60)     // (mm/s) Z axis feedrate (not used for delta printers)
+  #define NOZZLE_PARK_XY_FEEDRATE (10*60)    // (mm/s) X and Y axes feedrate (also used for delta Z axis)
+  #define NOZZLE_PARK_Z_FEEDRATE  (4*60)     // (mm/s) Z axis feedrate (not used for delta printers)
 #endif
 
 /**
@@ -2521,6 +2606,10 @@
 
   // For a purge/clean station mounted on the X axis
   #define NOZZLE_CLEAN_NO_Y
+
+  // Require a minimum hotend temperature for cleaning
+  #define NOZZLE_CLEAN_MIN_TEMP 170
+  //#define NOZZLE_CLEAN_HEATUP       // Heat up the nozzle instead of skipping wipe
 
   // Explicit wipe G-code script applies to a G12 with no arguments.
   //#define WIPE_SEQUENCE_COMMANDS "G1 X-17 Y25 Z10 F4000\nG1 Z1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400\nG0 X-10.0 Y-9.0"
@@ -3211,6 +3300,16 @@
 //#define LONGER_LK_TFT28
 
 //
+// 320x240, 2.8", FSMC Stock Display from ET4
+//
+//#define ANET_ET4_TFT28
+
+//
+// 480x320, 3.5", FSMC Stock Display from ET5
+//
+//#define ANET_ET5_TFT35
+
+//
 // Generic TFT with detailed options
 //
 //#define TFT_GENERIC
@@ -3271,10 +3370,11 @@
 
   #define TOUCH_SCREEN_CALIBRATION
 
-  //#define XPT2046_X_CALIBRATION 12316
-  //#define XPT2046_Y_CALIBRATION -8981
-  //#define XPT2046_X_OFFSET        -43
-  //#define XPT2046_Y_OFFSET        257
+  //#define TOUCH_CALIBRATION_X 12316
+  //#define TOUCH_CALIBRATION_Y -8981
+  //#define TOUCH_OFFSET_X        -43
+  //#define TOUCH_OFFSET_Y        257
+  //#define TOUCH_ORIENTATION   TOUCH_LANDSCAPE
 
   #if ENABLED(TFT_COLOR_UI)
     //#define SINGLE_TOUCH_NAVIGATION

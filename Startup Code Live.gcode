@@ -79,6 +79,7 @@
 	G91 ; Relative
 	G1 E25 F100 ; Extrude into Bucket
 	G1 E5 F50 ; Slow Purge to reduce pressure
+	G92 E0 ; Set Extruder Position
 	G90 ; Absolute
 	G10 ; Retract
 	
@@ -90,7 +91,6 @@
 	G0 X5 F500 ; Wipe
 	G0 X-5 F4000 ; Wipe
 	M211 S1 ; Enable SoftStops
-	G0 F6000 ; Set Speed for next move
 ;/Change Tool
 
 ;Change End
