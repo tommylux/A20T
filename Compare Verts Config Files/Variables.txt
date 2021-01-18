@@ -1,0 +1,53 @@
+
+GTA20T
+GTA20
+MIXT
+
+TOUCHPROBE
+DOUBLESPEED
+USE_PROBE_FOR_Z_HOMING
+
+PLR
+RUNOUT
+
+MULTIEXTRUDER
+AT2560
+
+
+Bedclips not set, but for reference:
+//Bed clip logic - use mesh inset or min probe edge to avoid clips not both
+//Tom Reference
+#if ENABLED (BEDCLIPS)
+  #define MESH_INSET 70   // Move mesh in #mm from edge
+  //Set per side
+  //#define MESH_MIN_X (MESH_INSET)
+  //#define MESH_MIN_Y MESH_INSET
+  //#define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
+  //#define MESH_MAX_Y Y_BED_SIZE - (MESH_INSET)
+#else
+  #define MESH_INSET 0    // Move mesh in #mm from edge
+  //Set per side
+  //#define MESH_MIN_X MESH_INSET
+  //#define MESH_MIN_Y MESH_INSET
+  //#define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
+  //#define MESH_MAX_Y Y_BED_SIZE - (MESH_INSET)
+#endif
+
+
+Should SINGLENOZZLE be declared CYCLOPS if so, perhaps MIXT needs to not be declared?
+
+
+This shows as 5 on verts sample config. Left matching sample:
+#define TEMP_SENSOR_0 1
+
+#define X_DRIVER_TYPE is set in sample config but not on Verts. Left matching sample.
+
+DISTINCT_E_FACTORS is set in Verts, but not in Sample config. Left matching sample (unset)
+
+DEFAULT_MAX_ACCELERATION is different. Took lower values from sample.
+
+S_CURVE_ACCELERATION is enabled on sample but not in Verts. Left matching sample (defined)
+
+Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN does not appear to be defined in Verts, but is defined in sample. left matching Sample.
+
+NOZZLE_TO_PROBE different in sample and verts. Updated to 30 to match testedcalues.
