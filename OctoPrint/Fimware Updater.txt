@@ -1,0 +1,13 @@
+The settings in firmware updater should be remembered:
+avrdude
+ATmega2560
+/usr/bin/avrdude
+arduino
+
+
+octopi.local
+pi
+raspberry
+
+sudo apt-get update -y
+sudo apt-get install -y avrdude
